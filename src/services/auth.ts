@@ -1,6 +1,8 @@
-import { User } from "../interfaces/user.interface";
+import { encrypt, verified } from "../utils/bcrypt.handle";
 import UserModel from "../models/user";
-import { encrypt } from "../utils/bcrypt.handle";
+import { Auth } from "../interfaces/auth.interface";
+import { User } from "../interfaces/user.interface";
+import { generateToken } from "../utils/jwt.handle";
 
 export const registerNewUser = async ({ email, password, name }: User) => {
   const checkIn = await UserModel.findOne({ email });
@@ -16,4 +18,23 @@ export const registerNewUser = async ({ email, password, name }: User) => {
   });
   return registerNewUser;
 };
-export const loginNewUser = async () => {};
+
+export const loginUser = async ({email, password}: Auth) => {
+  const checkIn = await UserModel.findOne({ email });
+  if(!checkIn) return "NOT_FOUND_USER"
+
+  const passwordHast = checkIn.password; // password encriptado
+  const isCorrect = await verified(password, passwordHast); // valor booleam
+
+  if(!isCorrect) return "PASSWORD_INCORRECT"
+
+  const token = generateToken(checkIn.email);
+
+  const data = {
+    token,
+    user: checkIn,
+  }
+
+  return data;
+};
+;

@@ -10,4 +10,12 @@ export const generateToken = async (id: string) => {
   return jwt;
 };
 
-export const verifyToken = async () => {};
+export const verifyToken = (jwt: string) => {
+  /**
+   * Recibe dos valores.
+   * 1. jwt = Token.
+   * 2. JWT_SECRET = Clave secreta.
+   */
+  const isOk =  verify(jwt, JWT_SECRET);
+  return isOk;
+};

@@ -12,6 +12,6 @@ export const encrypt = async (plainTextPassword: string) => {
 
 // Funcion "verified" que verifica y compara las contraseñas encriptadas. Para poder aceptar cuando una persona ingrese su contraseña.
 export const verified = async (plainTextPassword: string, hashPassword: string) => {
-  const isCorrect = await compare(plainTextPassword, hashPassword);
+  const isCorrect = await compare(plainTextPassword.toString(), hashPassword);
   return isCorrect; // Retorna un valor booleano.
 };

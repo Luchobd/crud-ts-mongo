@@ -19,22 +19,21 @@ export const registerNewUser = async ({ email, password, name }: User) => {
   return registerNewUser;
 };
 
-export const loginUser = async ({email, password}: Auth) => {
+export const loginUser = async ({ email, password }: Auth) => {
   const checkIn = await UserModel.findOne({ email });
-  if(!checkIn) return "NOT_FOUND_USER"
+  if (!checkIn) return "NOT_FOUND_USER";
 
   const passwordHast = checkIn.password; // password encriptado
   const isCorrect = await verified(password, passwordHast); // valor booleam
 
-  if(!isCorrect) return "PASSWORD_INCORRECT"
+  if (!isCorrect) return "PASSWORD_INCORRECT";
 
-  const token = generateToken(checkIn.email);
+  const token = await generateToken(checkIn.email);
 
   const data = {
-    token,
+    token: token,
     user: checkIn,
-  }
+  };
 
   return data;
 };
-;

@@ -15,5 +15,3 @@ dbConnect().then(() => console.log("Conexion Ready"))
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// 44:44
